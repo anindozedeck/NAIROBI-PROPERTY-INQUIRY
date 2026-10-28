@@ -44,7 +44,12 @@ RESPONSE_SCHEMA = {
         "bedrooms": {"type": ["integer", "null"]},
         "location": {"type": ["string", "null"]},
         "budget_kes": {"type": ["number", "null"]},
-        "rental_or_sale": {"type": ["string", "null"], "enum": ["rental", "sale", None]},
+        "rental_or_sale": {
+            "anyOf": [
+                {"type": "string", "enum": ["rental", "sale"]},
+                {"type": "null"},
+            ]
+        },
     },
     "required": list(FIELDS),
     "additionalProperties": False,
