@@ -3,7 +3,13 @@ import unittest
 from types import SimpleNamespace
 from unittest.mock import Mock
 
-from day12_exercise import FIELDS, SYSTEM_PROMPT, extract_inquiry, print_fields
+from day12_exercise import (
+    FIELDS,
+    RESPONSE_SCHEMA,
+    SYSTEM_PROMPT,
+    extract_inquiry,
+    print_fields,
+)
 
 
 class InquiryExtractionTests(unittest.TestCase):
@@ -54,6 +60,9 @@ class InquiryExtractionTests(unittest.TestCase):
                 self.assertEqual(tuple(result), FIELDS)
                 request = client.messages.create.call_args.kwargs
                 self.assertEqual(request["system"], SYSTEM_PROMPT)
+                self.assertEqual(
+                    request["output_config"]["format"]["schema"], RESPONSE_SCHEMA
+                )
                 self.assertEqual(request["messages"][0]["content"], inquiry)
 
     def test_prints_each_field_and_marks_missing_values(self) -> None:

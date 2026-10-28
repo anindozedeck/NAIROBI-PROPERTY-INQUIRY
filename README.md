@@ -1,9 +1,9 @@
 # Nairobi Property Inquiry Extractor
 
-This command-line script uses Anthropic to turn a raw property inquiry into a
-validated Python dictionary, then prints each extracted field. It is intended
-to help a property agent capture WhatsApp leads consistently instead of
-copying details into a spreadsheet by hand.
+This command-line script uses Anthropic's schema-constrained JSON output to
+turn a raw property inquiry into a validated Python dictionary, then prints
+each extracted field. It is intended to help a property agent capture WhatsApp
+leads consistently instead of copying details into a spreadsheet by hand.
 
 ## Extracted fields
 

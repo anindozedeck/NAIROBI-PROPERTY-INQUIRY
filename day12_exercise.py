@@ -37,6 +37,19 @@ FIELDS = (
     "rental_or_sale",
 )
 
+RESPONSE_SCHEMA = {
+    "type": "object",
+    "properties": {
+        "property_type": {"type": ["string", "null"]},
+        "bedrooms": {"type": ["integer", "null"]},
+        "location": {"type": ["string", "null"]},
+        "budget_kes": {"type": ["number", "null"]},
+        "rental_or_sale": {"type": ["string", "null"], "enum": ["rental", "sale", None]},
+    },
+    "required": list(FIELDS),
+    "additionalProperties": False,
+}
+
 
 class MessageClient(Protocol):
     messages: Any
@@ -82,9 +95,15 @@ def extract_inquiry(message: str, client: MessageClient | None = None) -> dict[s
         client = Anthropic(api_key=api_key)
 
     response = client.messages.create(
-        model=os.getenv("ANTHROPIC_MODEL", "claude-3-5-haiku-latest"),
+        model=os.getenv("ANTHROPIC_MODEL", "claude-haiku-4-5"),
         max_tokens=300,
         system=SYSTEM_PROMPT,
+        output_config={
+            "format": {
+                "type": "json_schema",
+                "schema": RESPONSE_SCHEMA,
+            }
+        },
         messages=[{"role": "user", "content": message}],
     )
     response_text = "".join(
